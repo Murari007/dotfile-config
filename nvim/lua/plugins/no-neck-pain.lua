@@ -3,7 +3,7 @@ return {
 	version = "*", -- optional, but recommended for stability
 	opts = {
 		-- Default options
-		width = 125,
+		width = 150,
 		buffers = {
 			right = {
 				enabled = true, -- disable right buffer by default

@@ -1,6 +1,5 @@
 vim.api.nvim_create_autocmd("BufEnter", {
 	pattern = "*.pdf",
--- group = vim.api.nvim_create_augroup("BinaryFilesPDF", { clear = true }),
 	callback = function()
 		local filename = vim.fn.shellescape(vim.api.nvim_buf_get_name(0))
 		vim.cmd("silent !zathura " .. filename .. " &")
@@ -11,7 +10,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
 -- Image files handler
 vim.api.nvim_create_autocmd("BufReadCmd", {
 	pattern = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp" },
--- group = vim.api.nvim_create_augroup("BinaryFilesImage", { clear = true }),
 	callback = function()
 		local filename = vim.fn.shellescape(vim.api.nvim_buf_get_name(0))
 		vim.cmd("silent !feh " .. filename .. " &")
