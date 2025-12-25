@@ -10,7 +10,23 @@ if not vim.loop.fs_stat(lazypath) then
 	})
 end
 vim.opt.rtp:prepend(lazypath)
-vim.opt.guifont = { "Source Code Pro", "h12" }
+-- vim.opt.guifont = { "Source Code Pro", "h18" }
+vim.opt.number = true
+vim.opt.fillchars = {
+  fold = ' ',
+  diff = '╱',
+  wbr = '─',
+  msgsep = '─',
+  horiz = ' ',
+  horizup = '│',
+  horizdown = '│',
+  vertright = '│',
+  vertleft = '│',
+  verthoriz = '│',
+}
+vim.g.neovide_fullscreen = 1
+vim.o.winborder = "rounded"
+
 
 require("vim-options")
 require("autocmds")

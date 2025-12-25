@@ -1,8 +1,6 @@
-" Vim syntax file
-" Language:   mlir
-" Maintainer: The MLIR team, http://github.com/tensorflow/mlir/
-" Version:      $Revision$
-" Some parts adapted from the LLVM vim syntax file.
+" Vim syntax file for MLIR (Modern Generic Version)
+" Maintainer: Liz (ChatGPT), Updated: 2025
+" Supports: ALL MLIR dialects, IREE IR, pass IR dumps, vm.*, hal.*, tensor.*, etc.
 
 if version < 600
   syntax clear
@@ -12,105 +10,81 @@ endif
 
 syn case match
 
-" Types.
-"
+"-----------------------------------------------------------
+"  TYPES
+"-----------------------------------------------------------
+
+" Primitive builtin types
 syn keyword mlirType index f16 f32 f64 bf16
-" Signless integer types.
+
+" Signless/unsigned/signed integers
 syn match mlirType /\<i\d\+\>/
-" Unsigned integer types.
-syn match mlirType /\<ui\d\+\>/
-" Signed integer types.
 syn match mlirType /\<si\d\+\>/
+syn match mlirType /\<ui\d\+\>/
 
-" Elemental types inside memref, tensor, or vector types.
-syn match mlirType /x\s*\zs\(bf16|f16\|f32\|f64\|i\d\+\|ui\d\+\|si\d\+\)/
+" Shaped types: memref<...>, tensor<...>, vector<...>
+syn match mlirType /\<memref\ze\s*</
+syn match mlirType /\<tensor\ze\s*</
+syn match mlirType /\<vector\ze\s*</
 
-" Shaped types.
-syn match mlirType /\<memref\ze\s*<.*>/
-syn match mlirType /\<tensor\ze\s*<.*>/
-syn match mlirType /\<vector\ze\s*<.*>/
+" Element type inside shaped types
+syn match mlirType /x\s*\zs\(bf16\|f16\|f32\|f64\|i\d\+\|si\d\+\|ui\d\+\)/
 
-" vector types inside memref or tensor.
-syn match mlirType /x\s*\zsvector/
+" Generic dialect types: !dialect.type<params>
+syn match mlirTypeIdentifier /![a-zA-Z_][a-zA-Z0-9_.-]*/
 
-" Operations.
-" TODO: this list is not exhaustive.
-syn keyword mlirOps alloc alloca addf addi and call call_indirect cmpf cmpi
-syn keyword mlirOps constant dealloc divf dma_start dma_wait dim exp
-syn keyword mlirOps getTensor index_cast load log memref_cast
-syn keyword mlirOps memref_shape_cast mulf muli negf powf prefetch rsqrt sitofp
-syn keyword mlirOps splat store select sqrt subf subi subview tanh
-syn keyword mlirOps view
+"-----------------------------------------------------------
+"  ATTRIBUTES
+"-----------------------------------------------------------
 
-" Math ops.
-syn match mlirOps /\<math\.erf\>/
-syn match mlirOps /\<math\.erfc\>/
+" Attribute aliases and dialect attributes: #dialect.attr<...>
+syn match mlirAttrIdentifier /#[a-zA-Z_][a-zA-Z0-9_.-]*/
 
-" Affine ops.
-syn match mlirOps /\<affine\.apply\>/
-syn match mlirOps /\<affine\.dma_start\>/
-syn match mlirOps /\<affine\.dma_wait\>/
-syn match mlirOps /\<affine\.for\>/
-syn match mlirOps /\<affine\.if\>/
-syn match mlirOps /\<affine\.load\>/
-syn match mlirOps /\<affine\.parallel\>/
-syn match mlirOps /\<affine\.prefetch\>/
-syn match mlirOps /\<affine\.store\>/
-syn match mlirOps /\<scf\.execute_region\>/
-syn match mlirOps /\<scf\.for\>/
-syn match mlirOps /\<scf\.if\>/
-syn match mlirOps /\<scf\.yield\>/
+" Numbers inside attributes
+syn match mlirNumber /-\?\<\d\+\>/
+syn match mlirFloat  /-\?\<\d\+\.\d*\(e[+-]\d\+\)\?\>/
+syn match mlirFloat  /\<0x\x\+\>/
 
-" TODO: dialect name prefixed ops (llvm or std).
-
-" Keywords.
-syn keyword mlirKeyword
-      \ affine_map
-      \ affine_set
-      \ dense
-      \ else
-      \ func
-      \ module
-      \ return
-      \ step
-      \ to
-
-" Misc syntax.
-
-syn match   mlirNumber /-\?\<\d\+\>/
-" Match numbers even in shaped types.
-syn match   mlirNumber /-\?\<\d\+\ze\s*x/
-syn match   mlirNumber /x\s*\zs-\?\d\+\ze\s*x/
-
-syn match   mlirFloat  /-\?\<\d\+\.\d*\(e[+-]\d\+\)\?\>/
-syn match   mlirFloat  /\<0x\x\+\>/
 syn keyword mlirBoolean true false
-" Spell checking is enabled only in comments by default.
-syn match   mlirComment /\/\/.*$/ contains=@Spell
-syn region  mlirString start=/"/ skip=/\\"/ end=/"/
-syn match   mlirLabel /[-a-zA-Z$._][-a-zA-Z$._0-9]*:/
-" Prefixed identifiers usually used for ssa values and symbols.
-syn match   mlirIdentifier /[%@][a-zA-Z$._-][a-zA-Z0-9$._-]*/
-syn match   mlirIdentifier /[%@]\d\+\>/
-" Prefixed identifiers usually used for blocks.
-syn match   mlirBlockIdentifier /\^[a-zA-Z$._-][a-zA-Z0-9$._-]*/
-syn match   mlirBlockIdentifier /\^\d\+\>/
-" Prefixed identifiers usually used for types.
-syn match   mlirTypeIdentifier /![a-zA-Z$._-][a-zA-Z0-9$._-]*/
-syn match   mlirTypeIdentifier /!\d\+\>/
-" Prefixed identifiers usually used for attribute aliases and result numbers.
-syn match   mlirAttrIdentifier /#[a-zA-Z$._-][a-zA-Z0-9$._-]*/
-syn match   mlirAttrIdentifier /#\d\+\>/
 
-" Syntax-highlight lit test commands and bug numbers.
-syn match  mlirSpecialComment /\/\/\s*RUN:.*$/
-syn match  mlirSpecialComment /\/\/\s*CHECK:.*$/
-syn match  mlirSpecialComment "\v\/\/\s*CHECK-(NEXT|NOT|DAG|SAME|LABEL):.*$"
-syn match  mlirSpecialComment /\/\/\s*expected-error.*$/
-syn match  mlirSpecialComment /\/\/\s*expected-remark.*$/
-syn match  mlirSpecialComment /;\s*XFAIL:.*$/
-syn match  mlirSpecialComment /\/\/\s*PR\d*\s*$/
-syn match  mlirSpecialComment /\/\/\s*REQUIRES:.*$/
+"-----------------------------------------------------------
+"  OPERATIONS
+"-----------------------------------------------------------
+
+" Builtin ops (rough baseline)
+syn keyword mlirBuiltinOps func return module call addf addi subf subi mulf muli divf cmpf cmpi constant load store alloc alloca view subview splat select tanh log exp sqrt rsqrt
+
+" Generic dialect-prefixed ops: dialect.op
+" Example: vm.rodata, hal.executable.format, tensor.extract
+syn match mlirOps /\<[a-zA-Z_][a-zA-Z0-9_]*\.[a-zA-Z0-9_]\+\>/
+
+"-----------------------------------------------------------
+"  IDENTIFIERS
+"-----------------------------------------------------------
+
+" SSA values and symbols: %val, @sym
+syn match mlirIdentifier /[%@][a-zA-Z_.$-][a-zA-Z0-9_.$-]*/
+syn match mlirIdentifier /[%@]\d\+/
+
+" Block identifiers: ^bb
+syn match mlirBlockIdentifier /\^[a-zA-Z_.$-][a-zA-Z0-9_.$-]*/
+syn match mlirBlockIdentifier /\^\d\+/
+
+" Labels with : at end
+syn match mlirLabel /[-a-zA-Z_.$][-a-zA-Z0-9_.$]*:/
+
+" Strings
+syn region mlirString start=/"/ skip=/\\"/ end=/"/
+
+" Comments
+syn match mlirComment /\/\/.*$/
+
+" Special IR dump markers (IREE, XLA)
+syn match mlirSpecialComment /\/\/ -----.*----- .*$/
+
+"-----------------------------------------------------------
+"  SYNTAX HIGHLIGHT LINKS
+"-----------------------------------------------------------
 
 if version >= 508 || !exists("did_c_syn_inits")
   if version < 508
@@ -121,22 +95,22 @@ if version >= 508 || !exists("did_c_syn_inits")
   endif
 
   HiLink mlirType Type
-  HiLink mlirOps Statement
-  HiLink mlirNumber Number
-  HiLink mlirComment Comment
-  HiLink mlirString String
-  HiLink mlirLabel Label
-  HiLink mlirKeyword Keyword
-  HiLink mlirBoolean Boolean
-  HiLink mlirFloat Float
-  HiLink mlirConstant Constant
-  HiLink mlirSpecialComment SpecialComment
-  HiLink mlirIdentifier Identifier
-  HiLink mlirBlockIdentifier Label
   HiLink mlirTypeIdentifier Type
   HiLink mlirAttrIdentifier PreProc
+  HiLink mlirOps Statement
+  HiLink mlirBuiltinOps Statement
+  HiLink mlirIdentifier Identifier
+  HiLink mlirBlockIdentifier Label
+  HiLink mlirLabel Label
+  HiLink mlirNumber Number
+  HiLink mlirFloat Float
+  HiLink mlirString String
+  HiLink mlirComment Comment
+  HiLink mlirSpecialComment SpecialComment
+  HiLink mlirBoolean Boolean
 
   delcommand HiLink
 endif
 
 let b:current_syntax = "mlir"
+

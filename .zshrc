@@ -19,7 +19,7 @@ if [ ! -d "$ZINIT_HOME" ]; then
    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 fi
 
-LS_COLORS='di=1;38;5;129:'; export LS_COLORS  # Bold dark purple
+# LS_COLORS='di=1;38;5;129:'; export LS_COLORS  # Bold dark purple
 
 # Source/Load zinit
 source "${ZINIT_HOME}/zinit.zsh"
@@ -87,16 +87,19 @@ eval "$(zoxide init --cmd cd zsh)"
 
 # Source the repos
 source /tools/Xilinx/Vitis/2022.2/settings64.sh
-source /opt/intel/oneapi/setvars.sh >/dev/null 2>&1
+# source /opt/intel/oneapi/setvars.sh >/dev/null 2>&1
 
 # Ensure correct CMake version is used
 export PATH="/usr/local/bin:$PATH"
-export LLVM_HOME=~/Documents/llvm-project/build
-export PATH=$LLVM_HOME/bin:$PATH
-export LD_LIBRARY_PATH=$LLVM_HOME/lib:$LD_LIBRARY_PATH
+#export LLVM_HOME=~/Documents/llvm-project/build
+#export PATH=$LLVM_HOME/bin:$PATH
+#export LD_LIBRARY_PATH=$LLVM_HOME/lib:$LD_LIBRARY_PATH
 export IREE_HOME=~/iree-build/tools
 export PATH=$IREE_HOME:$PATH
-export PYTHONPATH=/home/murari/torch-mlir/build/tools/torch-mlir/python_packages/torch_mlir:/home/murari/torch-mlir/test/python/fx_importer 
+export PYTHONPATH=/home/murari/torch-mlir/build/tools/torch-mlir/python_packages/torch_mlir:/home/murari/torch-mlir/test/python/fx_importer
+export TVM_HOME=/home/murari/tvm
+export PYTHONPATH=$TVM_HOME/python:$TVM_HOME/ffi/python:$PYTHONPATH
+export TVM_LIBRARY_PATH=/home/murari/tvm/build
 
 # Aliases
 alias ls='ls --color'
@@ -106,7 +109,6 @@ alias c='clear'
 alias inv='nvim $(fzf -m --preview="bat --color=always {}")'
 alias nv='nvim'
 alias cmake='/usr/local/bin/cmake'
-alias cling='cling -resource-dir=$(clang -print-resource-dir)'
 
 # <<< conda initialize <<<
 # !! Contents within this block are managed by 'conda init' !!
@@ -122,3 +124,6 @@ else
 fi
 unset __conda_setup
 # >>> conda initialize >>>
+# export GEMINI_API_KEY="AIzaSyAq29tUmdSgGelXh7JzwR8QdMjH1eN7tEU"
+source /home/murari/torch-mlir/torch-mlir-autocomplete.zsh
+source /home/murari/iree/tools/scripts/iree-tools-argcomplete.zsh
