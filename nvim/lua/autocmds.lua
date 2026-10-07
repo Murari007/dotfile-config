@@ -16,11 +16,3 @@ vim.api.nvim_create_autocmd("BufReadCmd", {
 		vim.cmd("let tobedeleted = bufnr('%') | b# | exe \"bd! \" . tobedeleted")
 	end,
 })
-
-vim.cmd("source ~/.config/nvim/mlir.vim")
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-	pattern = "*.mlir",
-	callback = function()
-		vim.bo.filetype = "mlir"
-	end,
-})

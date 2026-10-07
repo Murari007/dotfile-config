@@ -56,38 +56,20 @@ return {
 		config = function()
 			require("telescope").setup({
 				defaults = {
+					borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
 					preview = {
-						show_line = true, -- Changed from false to true to enable line preview
-						hide_on_startup = false, -- Ensure preview isn't hidden by default
-						treesitter = true, -- Enable treesitter for better syntax highlighting
+						show_line = true,
+						hide_on_startup = false,
+						treesitter = true,
 					},
 					layout_config = {
 						horizontal = {
-							preview_width = 0.65, -- 65% preview pane width
-							-- preview_width = 0.5, -- or fixed size: 80
+							preview_width = 0.65,
 						},
 						vertical = {
-							preview_height = 0.5, -- 50% preview height
+							preview_height = 0.5,
 						},
-						preview_cutoff = 120, -- hide preview when window is too narrow
-					},
-					pickers = {
-						lsp_definitions = {
-							show_line = true, -- Enable preview for definitions
-							previewer = true, -- Ensure previewer is enabled
-						},
-						lsp_references = {
-							show_line = true, -- Enable preview for references
-							previewer = true, -- Ensure previewer is enabled
-						},
-						lsp_implementations = {
-							show_line = true, -- Enable preview for implementations
-							previewer = true,
-						},
-						lsp_type_definitions = {
-							show_line = true, -- Enable preview for type definitions
-							previewer = true,
-						},
+						preview_cutoff = 120,
 					},
 					mappings = {
 						i = {
@@ -95,10 +77,28 @@ return {
 							["<C-h>"] = "select_horizontal",
 						},
 					},
-					extensions = {
-						["ui-select"] = {
-							require("telescope.themes").get_dropdown({}),
-						},
+				},
+				pickers = {
+					lsp_definitions = {
+						show_line = true,
+						previewer = true,
+					},
+					lsp_references = {
+						show_line = true,
+						previewer = true,
+					},
+					lsp_implementations = {
+						show_line = true,
+						previewer = true,
+					},
+					lsp_type_definitions = {
+						show_line = true,
+						previewer = true,
+					},
+				},
+				extensions = {
+					["ui-select"] = {
+						require("telescope.themes").get_dropdown({}),
 					},
 				},
 			})

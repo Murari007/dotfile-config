@@ -1,7 +1,17 @@
 return{
   "coder/claudecode.nvim",
   dependencies = { "folke/snacks.nvim" },
-  config = true,
+  config = function(_, opts)
+    require("claudecode").setup(opts)
+
+    -- Terminal-mode escape hatch, only inside the Claude terminal buffer
+    vim.api.nvim_create_autocmd("TermOpen", {
+      pattern = "*claude*",
+      callback = function(ev)
+        vim.keymap.set("t", "<C-q>", [[<C-\><C-n>]], { buffer = ev.buf, desc = "Exit Claude terminal mode" })
+      end,
+    })
+  end,
 
   keys = {
     { "<leader>a", nil, desc = "AI/Claude Code" },
@@ -12,6 +22,7 @@ return{
     { "<leader>ar", "<cmd>ClaudeCode --resume<cr>", desc = "Resume Claude" },
     { "<leader>aC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
     { "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
+    { "<leader>ak", "<cmd>ClaudeCodeClose<cr>", desc = "Kill Claude terminal" },
 
     -- Buffer / file actions
     { "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },

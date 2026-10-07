@@ -38,8 +38,8 @@ return {
 				},
 			},
 
-			memory_usage = { border = "none" },
-			symbol_info = { border = "none" },
+			memory_usage = { border = "single" },
+			symbol_info = { border = "single" },
 		})
 	end,
 }

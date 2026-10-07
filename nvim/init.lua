@@ -17,16 +17,21 @@ vim.opt.fillchars = {
   diff = '╱',
   wbr = '─',
   msgsep = '─',
-  horiz = ' ',
-  horizup = '│',
-  horizdown = '│',
-  vertright = '│',
-  vertleft = '│',
-  verthoriz = '│',
+  eob = ' ',
+  vert = '│',
+  horiz = '─',
+  horizup = '┴',
+  horizdown = '┬',
+  vertright = '├',
+  vertleft = '┤',
+  verthoriz = '┼',
 }
 vim.g.neovide_fullscreen = 1
-vim.o.winborder = "rounded"
-
+vim.g.lazyvim_check_order = false
+vim.o.winborder = "single"
+vim.o.pumblend = 10
+vim.opt.signcolumn = "yes:1"
+vim.opt.foldcolumn = "1"
 
 require("vim-options")
 require("autocmds")

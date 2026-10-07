@@ -56,16 +56,16 @@ return {
 
     require("neo-tree").setup({
       close_if_last_window = false, -- Keep Neo-tree open if it's the last window
-      popup_border_style = "rounded",
+      popup_border_style = "single",
       default_component_configs = {
         indent = {
           indent_size = 1,
         },
       },
       window = {
-        position = "float",
-        width = 0.5, -- Similar to your WIDTH_RATIO
-        height = 0.8, -- Similar to your HEIGHT_RATIO
+        position = "left",
+        width = 0.2, -- Similar to your WIDTH_RATIO
+        height = 0.5, -- Similar to your HEIGHT_RATIO
         mappings = {
           ["<space>"] = "none", -- Disable default mapping
         },
@@ -96,7 +96,7 @@ return {
           local center_x = (screen_w - window_w) / 2
           local center_y = ((vim.opt.lines:get() - window_h) / 2) - vim.opt.cmdheight:get()
           return {
-            border = "rounded",
+            border = "single",
             relative = "editor",
             row = center_y,
             col = center_x,

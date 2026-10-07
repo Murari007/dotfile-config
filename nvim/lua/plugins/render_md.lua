@@ -1,6 +1,7 @@
 return {
   "MeanderingProgrammer/render-markdown.nvim",
-  ft = { "markdown" }, -- load only for markdown files
+  enabled = false,
+  ft = { "markdown" },
   opts = {
     -- Example settings (all are optional)
     heading = {

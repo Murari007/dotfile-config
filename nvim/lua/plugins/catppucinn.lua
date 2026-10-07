@@ -23,6 +23,10 @@ return {
 			vim.api.nvim_set_hl(0, "Normal", { bg = "None" })
 			vim.api.nvim_set_hl(0, "LineNr", { bg = "None" })
 			vim.api.nvim_set_hl(0, "NotifyBackground", { bg = "#000000" })
+			vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#3b4261", bg = "None" })
+			vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#3b4261", bg = "None" })
+			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#0d1117" })
+			vim.api.nvim_set_hl(0, "FoldColumn", { bg = "None", fg = "None" })
 			-- vim.cmd([[
 			--         highlight DiffAdd guifg=None guibg=#004011
 			--         highlight DiffDelete guifg=None guibg=#BD6265
